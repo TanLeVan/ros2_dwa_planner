@@ -5,6 +5,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# Include directory 
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -14,6 +16,22 @@ find_package(visualization_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+
+
+# Add executable
+add_executable(dwa_planner_node src/dwa_planner.cpp)
+ament_target_dependencies(dwa_planner_node
+  rclcpp
+  sensor_msgs
+  nav_msgs
+  geometry_msgs
+  tf2_ros
+  tf2
+)
+target_include_directories(dwa_planner_node PUBLIC
+  ./include
+)
+
 
 
 
