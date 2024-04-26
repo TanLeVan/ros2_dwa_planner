@@ -36,6 +36,7 @@ add_executable(goal_publisher src/goal_publisher.cpp)
 ament_target_dependencies(goal_publisher
   rclcpp
   geometry_msgs
+  tf2
 )
 
 # Installing the node
