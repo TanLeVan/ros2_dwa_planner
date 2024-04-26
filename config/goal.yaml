@@ -1,0 +1,6 @@
+goal_publisher:
+  ros__parameters:
+    goal_frame: /map
+    goal_x: 0.
+    goal_y: 1.
+    goal_yaw_in_degree: 45. 

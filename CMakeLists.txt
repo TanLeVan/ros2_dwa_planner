@@ -32,9 +32,20 @@ target_include_directories(dwa_planner_node PUBLIC
   ./include
 )
 
+add_executable(goal_publisher src/goal_publisher.cpp)
+ament_target_dependencies(goal_publisher
+  rclcpp
+  geometry_msgs
+)
 
+# Installing the node
+install(TARGETS dwa_planner_node goal_publisher
+  DESTINATION lib/${PROJECT_NAME}
+)
 
-
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
