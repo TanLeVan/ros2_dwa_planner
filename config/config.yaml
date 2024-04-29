@@ -1,0 +1,17 @@
+goal_publisher:
+  ros__parameters:
+    goal_frame: /map
+    goal_x: 0.
+    goal_y: 1.
+    goal_yaw_in_degree: 45. 
+
+footprint_publisher:
+  ros__parameters:
+    circle_footprint:
+      #If this is true, the robot will assume 
+      #to have circular footprint
+      use_circle_footprint: false 
+      radius: 0.2 #in m
+    polygon_footprint:
+      footprint_x: [-0.2,0.2,0.2,-0.2] #in m
+      footprint_y: [0.1.0.1,-0.1,-0.1] #in m

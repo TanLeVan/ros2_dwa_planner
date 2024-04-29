@@ -2,14 +2,18 @@
 #define DWA_PLANNER_H
 
 #include "rclcpp/rclcpp.hpp"
+#include <string>
+
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/polygon_stamped.hpp>
 #include <geometry_msgs/msg/pose_array.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
+
 class DWAPlanner : public rclcpp::Node
 /**
  * @brief Class for DWA planner
@@ -45,10 +49,12 @@ public:
 
 protected:
     /*Member variable for neccesary information for the DWA algorithm*/
-    geometry_msgs::msg::PoseStamped goal_; /*Global goal for dwa*/
+    std::string robot_frame_{"/base_link"};
+    geometry_msgs::msg::PoseStamped goal_; /*Global goal for dwa. With respect to robot_frame_*/
     nav_msgs::msg::Odometry odom_;
     geometry_msgs::msg::PolygonStamped footprint_;
     geometry_msgs::msg::PoseArray obs_list_; /*List of observed obstacle*/
+    geometry_msgs::msg::Twist current_vel_; 
 
 
 

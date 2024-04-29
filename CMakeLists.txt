@@ -16,7 +16,7 @@ find_package(visualization_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
-
+find_package(tf2_geometry_msgs REQUIRED)
 
 # Add executable
 add_executable(dwa_planner_node src/dwa_planner.cpp)
@@ -27,6 +27,7 @@ ament_target_dependencies(dwa_planner_node
   geometry_msgs
   tf2_ros
   tf2
+  tf2_geometry_msgs
 )
 target_include_directories(dwa_planner_node PUBLIC
   ./include
@@ -34,6 +35,13 @@ target_include_directories(dwa_planner_node PUBLIC
 
 add_executable(goal_publisher src/goal_publisher.cpp)
 ament_target_dependencies(goal_publisher
+  rclcpp
+  geometry_msgs
+  tf2
+)
+
+add_executable(footprint_publisher src/footprint_publisher.cpp)
+ament_target_dependencies(footprint_publisher
   rclcpp
   geometry_msgs
   tf2
