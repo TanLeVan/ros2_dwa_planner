@@ -13,5 +13,15 @@ footprint_publisher:
       use_circle_footprint: false 
       radius: 0.2 #in m
     polygon_footprint:
-      footprint_x: [-0.2,0.2,0.2,-0.2] #in m
-      footprint_y: [0.1.0.1,-0.1,-0.1] #in m
+      frame_id : /base_footprint
+      footprint_x: [-0.2, 0.2, 0.2,-0.2] #in m
+      footprint_y: [0.1, 0.1,-0.1,-0.1] #in m
+
+dwa_planner_node:
+  ros__parameters:
+    MAX_LINEAR_VEL: 1.
+    min_linear_vel: 0. 
+    max_yaw_rate: 90. #in degree
+    max_acceleration: 1.
+    max_deceleration: 1.
+    max_yaw_acceleration: 45

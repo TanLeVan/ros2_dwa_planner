@@ -48,7 +48,7 @@ ament_target_dependencies(footprint_publisher
 )
 
 # Installing the node
-install(TARGETS dwa_planner_node goal_publisher
+install(TARGETS dwa_planner_node goal_publisher footprint_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
 

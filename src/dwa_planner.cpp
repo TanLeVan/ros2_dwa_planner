@@ -11,7 +11,22 @@ DWAPlanner::DWAPlanner()
 {
     std::cout << "Instantiate DWA planner node" << std::endl;
 
+    this->declare_parameter("MAX_LINEAR_VEL", 1.);
+    this->declare_parameter("MIN_LINEAR_VEL", 0.);
+    this->declare_parameter("MAX_YAW_RATE", 90);
+    this->declare_parameter("MAX_ACCELERATION", 1.);
+    this->declare_parameter("MAX_DECELERATION", 1.);
+    this->declare_parameter("MAX_YAW_ACCELERATION", 45);
+
+    /*Initializing robot dynamic constraint*/
+    robot_dynamic_.init(this->get_parameter("MAX_LINEAR_VEL").as_double(),
+                        this->get_parameter("MIN_LINEAR_VEL").as_double(),
+                        this->get_parameter("MAX_YAW_RATE").as_double(),
+                        this->get_parameter("MAX_ACCELERATION").as_double(),
+                        this->get_parameter("MAX_DECELERATION").as_double(),
+                        this->get_parameter("MAX_YAW_ACCELERATION").as_double());
     
+
     /*Initializing tf listener*/
     tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
@@ -33,7 +48,23 @@ void DWAPlanner::lidar_scan_callback(const sensor_msgs::msg::LaserScan &msg)
 }
 
 void DWAPlanner::footprint_callback(const geometry_msgs::msg::PolygonStamped &msg)
+/**Receive footprint topic and transform to robot frame**/
 {
+    footprint_ = msg;
+    if (footprint_.header.frame_id != robot_frame_)
+    {
+        try {
+            geometry_msgs::msg::TransformStamped to_robot_frame = tf_buffer_->lookupTransform(
+                robot_frame_, footprint_.header.frame_id,
+                tf2::TimePointZero);
+            tf2::doTransform(footprint_, footprint_, to_robot_frame);
+
+        } catch (const tf2::TransformException & ex) {
+            RCLCPP_INFO(this->get_logger(), "Could not transform %s to %s: %s",
+            robot_frame_.c_str(), footprint_.header.frame_id.c_str(), ex.what());    
+          return;
+        }
+    }
 
 }
 
@@ -94,8 +125,9 @@ void DWAPlanner::scan_to_obstacle(const sensor_msgs::msg::LaserScan &scan)
     {
         std::cout << "Converted scan to obstacle" << std::endl;
     }
-    
 }
+
+
 
 int main(int argc, char *argv[])
 {

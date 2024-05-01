@@ -10,16 +10,16 @@ public:
     FootprintPublisher()
     : rclcpp::Node("footprint_publisher")
     {
-        this->declare_parameter("circular_footprint.use_circular_footprint", rclcpp::PARAMETER_BOOL);
+        this->declare_parameter("circular_footprint.use_circular_footprint", false);
         this->declare_parameter("circular_footprint.radius", rclcpp::PARAMETER_DOUBLE);
         this->declare_parameter("polygon_footprint.footprint_x", rclcpp::PARAMETER_DOUBLE_ARRAY);
         this->declare_parameter("polygon_footprint.footprint_y", rclcpp::PARAMETER_DOUBLE_ARRAY);
+        this->declare_parameter("polygon_footprint.frame_id", rclcpp::PARAMETER_STRING);
 
+        use_circular_footprint = this->get_parameter("circular_footprint.use_circular_footprint").as_bool();
         footprint_pub_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("/footprint", 10);
         timer_ = this->create_wall_timer(
         500ms, std::bind(&FootprintPublisher::timer_callback, this));
-
-        use_circular_footprint = this->get_parameter("circular_footprint.use_circular_footprint").as_bool();
     }
 private:
     void timer_callback()
@@ -32,6 +32,8 @@ private:
                 RCLCPP_ERROR(this->get_logger(),"Inappropriate footprint");
                 exit(1);
             }
+            footprint_.header.frame_id = this->get_parameter("polygon_footprint.frame_id").as_string();
+            footprint_.header.stamp = this->get_clock()->now();
             for (std::size_t i{0}; i < footprint_x.size(); ++i)
             {
                 geometry_msgs::msg::Point32 p;
@@ -45,7 +47,7 @@ private:
     geometry_msgs::msg::PolygonStamped footprint_;
     rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr footprint_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
-    bool use_circular_footprint{false};
+    bool use_circular_footprint;
 };
 
 int main(int argc, char ** argv)
