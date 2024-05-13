@@ -1,27 +1,32 @@
 goal_publisher:
   ros__parameters:
-    goal_frame: /map
-    goal_x: 0.
+    sim_time: true
+    goal_frame: odom
+    goal_x: 1.5
     goal_y: 1.
     goal_yaw_in_degree: 45. 
 
 footprint_publisher:
   ros__parameters:
-    circle_footprint:
-      #If this is true, the robot will assume 
-      #to have circular footprint
-      use_circle_footprint: false 
-      radius: 0.2 #in m
+    sim_time: true
     polygon_footprint:
-      frame_id : /base_footprint
-      footprint_x: [-0.2, 0.2, 0.2,-0.2] #in m
-      footprint_y: [0.1, 0.1,-0.1,-0.1] #in m
+      frame_id : base_link
+      footprint_x: [-0.2, 0.2, 0.2, -0.2] #in m
+      footprint_y: [0.2, 0.2,-0.2,-0.2] #in m
 
-dwa_planner_node:
+DWAPlanner_node:
   ros__parameters:
-    MAX_LINEAR_VEL: 1.
-    min_linear_vel: 0. 
-    max_yaw_rate: 90. #in degree
-    max_acceleration: 1.
-    max_deceleration: 1.
-    max_yaw_acceleration: 45
+    MAX_LINEAR_VEL: 0.04
+    MIN_LINEAR_VEL: 0. 
+    MAX_YAW_RATE: 20. #in degree
+    MAX_ACCELERATION: 0.02
+    MAX_DECELERATION: 0.02
+    MAX_YAW_ACCELERATION: 20.
+
+    LINEAR_VEL_SAMPLE_SIZE: 4
+    YAW_RATE_SAMPLE_SIZE: 4
+    SIM_TIME: 3. #IN SECOND 
+    SIM_TIMESTEP: 0.5 # IN SECOND
+    SCAN_RANGE: 1. #IN METER
+    SKIP_POINT: 5 #How many point to skip when converting lidar scan to obstacle
+    DISTANCE_TO_GOAL_THRESHOLD: 0.1

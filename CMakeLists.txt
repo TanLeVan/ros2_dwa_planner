@@ -13,10 +13,13 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(rosgraph_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # Add executable
 add_executable(dwa_planner_node src/dwa_planner.cpp)
@@ -28,6 +31,8 @@ ament_target_dependencies(dwa_planner_node
   tf2_ros
   tf2
   tf2_geometry_msgs
+  Eigen3
+  builtin_interfaces
 )
 target_include_directories(dwa_planner_node PUBLIC
   ./include
@@ -38,6 +43,7 @@ ament_target_dependencies(goal_publisher
   rclcpp
   geometry_msgs
   tf2
+  rosgraph_msgs
 )
 
 add_executable(footprint_publisher src/footprint_publisher.cpp)
@@ -45,6 +51,7 @@ ament_target_dependencies(footprint_publisher
   rclcpp
   geometry_msgs
   tf2
+  rosgraph_msgs
 )
 
 # Installing the node
@@ -52,7 +59,7 @@ install(TARGETS dwa_planner_node goal_publisher footprint_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY config
+install(DIRECTORY config launch
   DESTINATION share/${PROJECT_NAME}
 )
 
