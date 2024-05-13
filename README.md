@@ -20,6 +20,12 @@ This repo was made as an attemp to fully understand the implementation of the Dy
 - tf2_geometry_msgs: For Quaternion related calculation
 - Eigen3: For vector and matrix operation
 
+## Installation
+- `mkdir ~/ros_ws/src`
+- `cd /ros_ws/src`
+- `git clone https://github.com/TanLeVan/ros2_dwa_planner.git`
+- `colcon build --packages-select ros2_dwa_planner`
+
 ## Feature 
 - Publish appropriate velocity command for the robot to avoid obstacle while navigating to goal
 
@@ -60,7 +66,7 @@ Using turtlebot3_gazebo for demostration
 - Start dwa node:
     `ros2 run ros2_dwa_planner dwa_planner_node --ros-arg --params-file <path/to/config.yaml/file.installation>`
 
-## TO BE IMPROVED
+## To be improve 
 - The process of calculating the distance between polygon footprint to obstacle take to long
 - Create trajectory visualization
 - Adding rotation at goal to rotate to the desired posed.
